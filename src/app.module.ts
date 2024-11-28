@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import * as dotenv from "dotenv"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import * as yup from 'yup';
+import { RouteMapsModule } from './route-maps/route-maps.module';
+import { TbDataset } from './route-maps/route-maps.entity';
 
 dotenv.config()
 
@@ -26,13 +28,14 @@ const validatedEnv = envSchema.validateSync(process.env, { abortEarly: false });
 
 @Module({
   imports: [
+    RouteMapsModule,
     TypeOrmModule.forRoot({
       type: "postgres",
       host: validatedEnv.DB_HOST,
       username: validatedEnv.DB_USER,
       password: validatedEnv.DB_PASSWORD,
       database: validatedEnv.DB_DATABASE,
-      entities: [],
+      entities: [TbDataset],
       synchronize: true
     })
   ],
